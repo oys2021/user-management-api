@@ -8,7 +8,7 @@
 
 A robust **User Management API** built with **Node.js, Express, and PostgreSQL** featuring **dual authentication** (JWT + Session), secure password handling, and comprehensive user management operations.
 
-The APi Docs is found here http://localhost:8000/api-docs
+The Swagger APi Docs is found when you run the serrver at  http://localhost:8000/api-docs
 
 ## 📋 Table of Contents
 
