@@ -91,7 +91,7 @@ npm install
 
 # Configure environment
 cp .env.example .env
-# Edit .env with your database credentials
+# Edit .env with your database credentials. Node the Database was connected loally so configure yours in the virtual environment
 
 # Start the server
-npm run dev
+nodemon server.js
