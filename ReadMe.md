@@ -85,7 +85,7 @@ The APi Docs is found here http://localhost:8000/api-docs
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/user-management-api.git
+git clone https://github.com/oys2021/user-management-api.git
 cd user-management-api
 
 # Install dependencies
