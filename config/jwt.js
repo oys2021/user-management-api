@@ -1,4 +1,11 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Log environment variables to debug
+console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'SET' : 'NOT SET');
+console.log('REFRESH_TOKEN_SECRET:', process.env.REFRESH_TOKEN_SECRET ? 'SET' : 'NOT SET');
 
 class JWTService {
   static generateAccessToken(user) {
@@ -9,22 +16,36 @@ class JWTService {
       role: user.role
     };
 
-    return jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN || '15m'
+    const secret = process.env.JWT_SECRET || process.env.JWT_ACCESS_SECRET;
+    if (!secret) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
+
+    return jwt.sign(payload, secret, {
+      expiresIn: process.env.JWT_ACCESS_EXPIRY || process.env.JWT_EXPIRES_IN || '15m'
     });
   }
 
   static generateRefreshToken(user) {
+    const secret = process.env.REFRESH_TOKEN_SECRET || process.env.JWT_REFRESH_SECRET;
+    if (!secret) {
+      throw new Error('REFRESH_TOKEN_SECRET environment variable is not set');
+    }
+
     return jwt.sign(
       { id: user.id },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '7d' }
+      secret,
+      { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || process.env.JWT_REFRESH_EXPIRY || '7d' }
     );
   }
 
   static verifyAccessToken(token) {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET);
+      const secret = process.env.JWT_SECRET || process.env.JWT_ACCESS_SECRET;
+      if (!secret) {
+        throw new Error('JWT_SECRET environment variable is not set');
+      }
+      return jwt.verify(token, secret);
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         throw new Error('Access token expired');
@@ -35,7 +56,11 @@ class JWTService {
 
   static verifyRefreshToken(token) {
     try {
-      return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+      const secret = process.env.REFRESH_TOKEN_SECRET || process.env.JWT_REFRESH_SECRET;
+      if (!secret) {
+        throw new Error('REFRESH_TOKEN_SECRET environment variable is not set');
+      }
+      return jwt.verify(token, secret);
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         throw new Error('Refresh token expired');

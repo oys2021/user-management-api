@@ -35,7 +35,10 @@ const limiter = rateLimit({
 });
 
 app.use(limiter)
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  credentials: true,
+}));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.json())
