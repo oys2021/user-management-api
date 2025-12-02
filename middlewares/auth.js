@@ -1,4 +1,4 @@
-import JWTService from '../utils/jwt.js';
+import JWTService from '../config/jwt.js';
 import { User } from '../models/index.js';
 
 export const authenticateJWT = async (req, res, next) => {

@@ -1,5 +1,6 @@
-import session  from 'express-session';
-import  sequelize from './database.js';
+// src/config/session.js
+import session from 'express-session';
+import { sequelize } from './database.js';
 import connectSessionSequelize from 'connect-session-sequelize';
 
 const SequelizeStore = connectSessionSequelize(session.Store);
@@ -10,7 +11,6 @@ const sessionStore = new SequelizeStore({
   checkExpirationInterval: 15 * 60 * 1000, 
   expiration: 24 * 60 * 60 * 1000 
 });
-
 
 sessionStore.sync();
 
@@ -28,4 +28,4 @@ const sessionConfig = {
   name: 'auth.sid'
 };
 
-module.exports = session(sessionConfig);
+export default session(sessionConfig);

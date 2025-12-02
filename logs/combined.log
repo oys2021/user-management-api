@@ -1,0 +1,76 @@
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:34:41.573Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:34:41.696Z"}
+{"errors":[{"instance":null,"message":"typname must be unique","origin":"DB","path":"typname","type":"unique violation","validatorArgs":[],"validatorKey":"not_unique","validatorName":null,"value":"sessions"},{"instance":null,"message":"typnamespace must be unique","origin":"DB","path":"typnamespace","type":"unique violation","validatorArgs":[],"validatorKey":"not_unique","validatorName":null,"value":"2200"}],"fields":{"typname":"sessions","typnamespace":"2200"},"level":"error","message":"Database sync failed: Validation error","name":"SequelizeUniqueConstraintError","original":{"code":"23505","constraint":"pg_type_typname_nsp_index","detail":"Key (typname, typnamespace)=(sessions, 2200) already exists.","file":"nbtinsert.c","length":248,"line":"671","name":"error","routine":"_bt_check_unique","schema":"pg_catalog","severity":"ERROR","sql":"CREATE TABLE IF NOT EXISTS \"sessions\" (\"sid\" VARCHAR(36) , \"expires\" TIMESTAMP WITH TIME ZONE, \"data\" TEXT, \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL, \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY (\"sid\"));","table":"pg_type"},"parent":{"code":"23505","constraint":"pg_type_typname_nsp_index","detail":"Key (typname, typnamespace)=(sessions, 2200) already exists.","file":"nbtinsert.c","length":248,"line":"671","name":"error","routine":"_bt_check_unique","schema":"pg_catalog","severity":"ERROR","sql":"CREATE TABLE IF NOT EXISTS \"sessions\" (\"sid\" VARCHAR(36) , \"expires\" TIMESTAMP WITH TIME ZONE, \"data\" TEXT, \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL, \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY (\"sid\"));","table":"pg_type"},"sql":"CREATE TABLE IF NOT EXISTS \"sessions\" (\"sid\" VARCHAR(36) , \"expires\" TIMESTAMP WITH TIME ZONE, \"data\" TEXT, \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL, \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY (\"sid\"));","stack":"Error\n    at Query.run (C:\\Users\\dell\\Documents\\userManagement\\userBackend\\node_modules\\sequelize\\lib\\dialects\\postgres\\query.js:50:25)\n    at C:\\Users\\dell\\Documents\\userManagement\\userBackend\\node_modules\\sequelize\\lib\\sequelize.js:315:28\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async PostgresQueryInterface.createTable (C:\\Users\\dell\\Documents\\userManagement\\userBackend\\node_modules\\sequelize\\lib\\dialects\\abstract\\query-interface.js:98:12)\n    at async Session.sync (C:\\Users\\dell\\Documents\\userManagement\\userBackend\\node_modules\\sequelize\\lib\\model.js:942:7)\n    at async Sequelize.sync (C:\\Users\\dell\\Documents\\userManagement\\userBackend\\node_modules\\sequelize\\lib\\sequelize.js:377:9)\n    at async syncModels (file:///C:/Users/dell/Documents/userManagement/userBackend/models/index.js:22:5)\n    at async file:///C:/Users/dell/Documents/userManagement/userBackend/server.js:63:5","timestamp":"2025-12-02T11:34:41.717Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:34:42.407Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:37:16.193Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:37:16.267Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:37:16.378Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:37:16.557Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:37:20.779Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:37:20.845Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:37:20.863Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:37:20.937Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:52:17.550Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:52:17.635Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:52:17.668Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:52:17.717Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:53:17.178Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:53:17.297Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:53:17.300Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:53:17.511Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:54:22.075Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:54:22.172Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:54:22.167Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:54:22.257Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:55:06.114Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:55:06.351Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:55:06.465Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:55:06.527Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:55:13.187Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:55:13.301Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:55:13.360Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:55:13.425Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:55:33.251Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:55:33.304Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:55:33.334Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:55:33.401Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:56:55.037Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:56:55.227Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:56:55.461Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:56:55.707Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:57:12.530Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:57:12.598Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:57:12.660Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:57:12.695Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:57:31.661Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T11:57:31.729Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:57:31.765Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T11:57:31.826Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:00:13.644Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:00:13.707Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:00:13.708Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:00:13.805Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:00:18.922Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:00:18.980Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:00:19.011Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:00:19.066Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:04:10.920Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:04:11.009Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:04:11.109Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:04:11.209Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:04:17.731Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:04:17.845Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:04:17.882Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:04:17.967Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:04:54.968Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:04:55.024Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:05:35.725Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:05:35.818Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:05:35.814Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:05:35.921Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:06:28.071Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:06:28.144Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T12:10:14.528Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T12:10:14.639Z"}
+{"level":"info","message":"PostgreSQL connected with Sequelize","timestamp":"2025-12-02T13:15:07.711Z"}
+{"level":"info","message":"Database synchronized","timestamp":"2025-12-02T13:15:07.819Z"}
