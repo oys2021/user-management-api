@@ -8,6 +8,8 @@
 
 A robust **User Management API** built with **Node.js, Express, and PostgreSQL** featuring **dual authentication** (JWT + Session), secure password handling, and comprehensive user management operations.
 
+The APi Docs is found here http://localhost:8000/api-docs
+
 ## 📋 Table of Contents
 
 - [Features](#features)
@@ -95,3 +97,40 @@ cp .env.example .env
 
 # Start the server
 nodemon server.js
+
+##  Authentication Endpoints
+
+Method	Endpoint	Description	Auth Required
+POST	/api/auth/register	Register new user	No
+POST	/api/auth/login	User login	No
+POST	/api/auth/logout	User logout	Yes
+POST	/api/auth/refresh-token	Refresh JWT token	No
+GET	/api/auth/me	Get current user	Yes
+PUT	/api/auth/profile	Update profile	Yes
+
+## Database Schema
+Users Table
+sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(20) DEFAULT 'user',
+  is_active BOOLEAN DEFAULT true,
+  email_verified BOOLEAN DEFAULT false,
+  last_login TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Indexes
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_users_created_at ON users(created_at);
+
+Development Mode
+bash
+npm run dev
+
+
