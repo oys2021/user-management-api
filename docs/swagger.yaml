@@ -2,22 +2,24 @@ openapi: 3.0.3
 info:
   title: Authentication API
   version: 1.0.0
-  description: API for user authentication and session/JWT management
+  description: API for JWT-based session authentication with HTTP-only cookies
 
 servers:
-  - url: http://localhost:5000/api
+  - url: http://localhost:8000/api
     description: Local server
 
 components:
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
     CookieAuth:
       type: apiKey
       in: cookie
-      name: session_id
+      name: access_token
+      description: JWT access token stored in HTTP-only cookie
+    RefreshCookie:
+      type: apiKey
+      in: cookie
+      name: refresh_token
+      description: Refresh token stored in HTTP-only cookie
 
   schemas:
     User:
@@ -40,17 +42,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-
-    Tokens:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type: string
-        expiresIn:
-          type: integer
-          description: Access token expiry in seconds
 
     ErrorResponse:
       type: object
@@ -84,19 +75,25 @@ paths:
                 - username
                 - email
                 - password
-                - confirmPassword
               properties:
                 username:
                   type: string
+                  minLength: 3
+                  maxLength: 50
                 email:
                   type: string
+                  format: email
                 password:
                   type: string
-                confirmPassword:
-                  type: string
+                  minLength: 6
       responses:
         201:
           description: Registration successful
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: access_token and refresh_token cookies set
           content:
             application/json:
               schema:
@@ -104,17 +101,15 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    example: true
                   message:
                     type: string
+                    example: Registration successful
                   data:
                     type: object
                     properties:
                       user:
                         $ref: '#/components/schemas/User'
-                      tokens:
-                        $ref: '#/components/schemas/Tokens'
-                      sessionId:
-                        type: string
         400:
           description: Validation or duplicate error
           content:
@@ -138,11 +133,17 @@ paths:
               properties:
                 email:
                   type: string
+                  format: email
                 password:
                   type: string
       responses:
         200:
           description: Login successful
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: access_token and refresh_token cookies set
           content:
             application/json:
               schema:
@@ -150,22 +151,15 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    example: true
                   message:
                     type: string
+                    example: Login successful
                   data:
                     type: object
                     properties:
                       user:
                         $ref: '#/components/schemas/User'
-                      tokens:
-                        $ref: '#/components/schemas/Tokens'
-                      session:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          expires:
-                            type: integer
         401:
           description: Invalid credentials
           content:
@@ -173,24 +167,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /auth/refresh-token:
+  /auth/refresh:
     post:
-      summary: Refresh access token
+      summary: Refresh access token using refresh token
       tags: [Auth]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - refreshToken
-              properties:
-                refreshToken:
-                  type: string
+      security:
+        - RefreshCookie: []
       responses:
         200:
-          description: New tokens generated
+          description: New access token generated
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: New access_token cookie set
           content:
             application/json:
               schema:
@@ -198,10 +188,19 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    example: true
                   data:
-                    $ref: '#/components/schemas/Tokens'
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
         403:
           description: Invalid or expired refresh token
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: access_token and refresh_token cookies cleared
           content:
             application/json:
               schema:
@@ -211,18 +210,17 @@ paths:
     post:
       summary: Logout user
       tags: [Auth]
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                refreshToken:
-                  type: string
+      security:
+        - CookieAuth: []
+        - RefreshCookie: []
       responses:
         200:
           description: Logout successful
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: access_token and refresh_token cookies cleared
           content:
             application/json:
               schema:
@@ -230,19 +228,26 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    example: true
                   message:
                     type: string
+                    example: Logout successful
+        500:
+          description: Server error during logout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /auth/me:
     get:
-      summary: Get current user (session or JWT)
+      summary: Get current authenticated user
       tags: [Auth]
       security:
-        - BearerAuth: []
         - CookieAuth: []
       responses:
         200:
-          description: User info
+          description: User information
           content:
             application/json:
               schema:
@@ -250,14 +255,57 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    example: true
                   data:
                     type: object
                     properties:
                       user:
                         $ref: '#/components/schemas/User'
-                      authType:
-                        type: string
-                        description: JWT or session
+        401:
+          description: Not authenticated
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Cookies cleared if invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: User not found
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Cookies cleared if user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/profile:
+    get:
+      summary: Get user profile
+      tags: [Auth]
+      security:
+        - CookieAuth: []
+      responses:
+        200:
+          description: Profile information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
         401:
           description: Not authenticated
           content:
@@ -265,12 +313,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /auth/profile:
     put:
-      summary: Update current user profile
+      summary: Update user profile
       tags: [Auth]
       security:
-        - BearerAuth: []
         - CookieAuth: []
       requestBody:
         required: true
@@ -281,8 +327,11 @@ paths:
               properties:
                 username:
                   type: string
+                  minLength: 3
+                  maxLength: 50
                 email:
                   type: string
+                  format: email
       responses:
         200:
           description: Profile updated
@@ -293,13 +342,21 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    example: true
                   message:
                     type: string
+                    example: Profile updated
                   data:
                     type: object
                     properties:
                       user:
                         $ref: '#/components/schemas/User'
+        400:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         401:
           description: Not authenticated
           content:
@@ -312,7 +369,6 @@ paths:
       summary: Get all users (admin only)
       tags: [Auth]
       security:
-        - BearerAuth: []
         - CookieAuth: []
       responses:
         200:
@@ -324,6 +380,7 @@ paths:
                 properties:
                   success:
                     type: boolean
+                    example: true
                   data:
                     type: object
                     properties:
@@ -331,6 +388,12 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/User'
+        401:
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         403:
           description: Insufficient permissions
           content:

@@ -14,6 +14,7 @@ import fs from 'fs';
 import YAML from 'yaml';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cookieParser from 'cookie-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,15 +36,21 @@ const limiter = rateLimit({
 });
 
 app.use(limiter)
-app.use(cors({
-  origin: 'http://localhost:5173', 
-  credentials: true,
-}));
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      callback(null, origin || "*"); 
+    },
+    credentials: true,
+  })
+);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-app.use(sessionMiddleware);
+// app.use(sessionMiddleware);
+app.use(cookieParser());
 
 app.use(
   morgan('combined', {

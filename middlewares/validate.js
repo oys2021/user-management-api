@@ -1,4 +1,3 @@
-// middlewares/validate.js
 import { body, validationResult } from 'express-validator';
 
 export const validateRequest = (req, res, next) => {
@@ -41,4 +40,3 @@ export const loginValidation = [
   body('password')
     .notEmpty().withMessage('Password is required')
 ];
-
